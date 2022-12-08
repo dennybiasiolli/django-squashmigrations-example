@@ -61,3 +61,25 @@ class TweetTestCase(TestCase):
                 )
         self.assertEqual(IntegrityError, type(raised.exception))
         self.assertEqual(tweet.like_set.count(), 2)
+
+    def test_retweet(self):
+        tweet1 = Tweet.objects.create(created_by=self.u1, text="First tweet")
+        tweet1.full_clean()
+        # reply
+        tweet2 = Tweet.objects.create(
+            created_by=self.u2,
+            related_tweet=tweet1,
+            text="True story!",
+        )
+        tweet2.full_clean()
+        # retweet
+        tweet3 = Tweet.objects.create(
+            created_by=self.u1,
+            related_tweet=tweet2,
+        )
+        tweet3.full_clean()
+        # bad retweet
+        tweet4 = Tweet.objects.create(
+            created_by=self.u1,
+        )
+        self.assertRaises(ValidationError, tweet4.full_clean)

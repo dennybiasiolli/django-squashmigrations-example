@@ -60,7 +60,7 @@ class TweetTestCase(TestCase):
                     created_by=self.u2,
                 )
         self.assertEqual(IntegrityError, type(raised.exception))
-        self.assertEqual(tweet.like_set.count(), 2)
+        self.assertEqual(tweet.likes.count(), 2)
 
     def test_retweet(self):
         tweet1 = Tweet.objects.create(created_by=self.u1, text="First tweet")

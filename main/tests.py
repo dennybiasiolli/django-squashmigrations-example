@@ -5,7 +5,7 @@ from django.db import transaction
 from django.db.utils import DataError, IntegrityError
 from django.test import TestCase
 
-from main.models import Like, Tweet
+from main.models import Follow, Like, Tweet
 
 
 class TweetTestCase(TestCase):
@@ -83,3 +83,10 @@ class TweetTestCase(TestCase):
             created_by=self.u1,
         )
         self.assertRaises(ValidationError, tweet4.full_clean)
+
+    def test_followers_count(self):
+        Follow.objects.create(created_by=self.u1, user_followed=self.u2)
+        self.assertEqual(self.u1.followers.count(), 0)
+        self.assertEqual(self.u1.following.count(), 1)
+        self.assertEqual(self.u2.followers.count(), 1)
+        self.assertEqual(self.u2.following.count(), 0)

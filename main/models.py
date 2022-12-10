@@ -32,3 +32,13 @@ class Like(models.Model):
 
     class Meta:
         unique_together = ["tweet", "created_by"]
+
+
+class Follow(models.Model):
+    created_by = models.ForeignKey(
+        get_user_model(), on_delete=models.CASCADE, related_name="following"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    user_followed = models.ForeignKey(
+        get_user_model(), on_delete=models.CASCADE, related_name="followers"
+    )

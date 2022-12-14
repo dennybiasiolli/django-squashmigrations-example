@@ -3,7 +3,7 @@ from django.db import transaction
 from django.db.utils import IntegrityError
 from django.test import TestCase
 
-from shop.models import Customer
+from shop.models import Customer, ShippingAddress
 
 
 class ShopTestCase(TestCase):
@@ -11,6 +11,7 @@ class ShopTestCase(TestCase):
         UserModel = get_user_model()
         self.u1 = UserModel.objects.create(username="foo")
         self.u2 = UserModel.objects.create(username="bar")
+        self.c2 = Customer.objects.create(user=self.u2)
 
     def test_customer_uniqueness_with_user(self):
         Customer.objects.create(user=self.u1, is_premium=False)
@@ -41,3 +42,18 @@ class ShopTestCase(TestCase):
             state="1",
         )
         shipping_address.full_clean()
+
+    def test_order_copy_shipping_address(self):
+        shipping_address = self.c2.shipping_addresses.create(
+            name="1" * ShippingAddress.name.field.max_length,
+            address="1" * ShippingAddress.address.field.max_length,
+            zip_code="1" * ShippingAddress.zip_code.field.max_length,
+            city="1" * ShippingAddress.city.field.max_length,
+            province="1" * ShippingAddress.province.field.max_length,
+            state="1" * ShippingAddress.state.field.max_length,
+        )
+        order = self.c2.orders.create()
+        order.full_clean()
+        order.copy_shipping_address(shipping_address)
+        order.full_clean()
+        order.save()

@@ -16,3 +16,15 @@ class Customer(models.Model):
     shipping_city = models.CharField(max_length=50)
     shipping_province = models.CharField(max_length=5)
     shipping_state = models.CharField(max_length=20)
+
+
+class ShippingAddress(models.Model):
+    customer = models.ForeignKey(
+        Customer, on_delete=models.CASCADE, related_name="shipping_addresses"
+    )
+    name = models.CharField(max_length=100)
+    address = models.CharField(max_length=50)
+    zip_code = models.CharField(max_length=10)
+    city = models.CharField(max_length=50)
+    province = models.CharField(max_length=5)
+    state = models.CharField(max_length=20)

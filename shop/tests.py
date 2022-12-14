@@ -48,3 +48,24 @@ class ShopTestCase(TestCase):
             shipping_state="1",
         )
         self.assertFalse(customer.is_premium)
+
+    def test_customer_shipping_addresses(self):
+        customer = Customer.objects.create(
+            user=self.u1,
+            shipping_name="1",
+            shipping_address="1",
+            shipping_zip_code="1",
+            shipping_city="1",
+            shipping_province="1",
+            shipping_state="1",
+        )
+        customer.full_clean()
+        shipping_address = customer.shipping_addresses.create(
+            name="1",
+            address="1",
+            zip_code="1",
+            city="1",
+            province="1",
+            state="1",
+        )
+        shipping_address.full_clean()

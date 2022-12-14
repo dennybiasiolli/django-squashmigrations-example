@@ -16,9 +16,9 @@ class ShippingAddress(models.Model):
     customer = models.ForeignKey(
         Customer, on_delete=models.CASCADE, related_name="shipping_addresses"
     )
-    name = models.CharField(max_length=100)
-    address = models.CharField(max_length=50)
+    name = models.CharField(max_length=200)
+    address = models.CharField(max_length=100)
     zip_code = models.CharField(max_length=10)
-    city = models.CharField(max_length=50)
+    city = models.CharField(max_length=100)
     province = models.CharField(max_length=5)
-    state = models.CharField(max_length=20)
+    state = models.CharField(max_length=50)

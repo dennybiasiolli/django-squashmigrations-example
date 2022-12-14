@@ -34,6 +34,7 @@ class Order(models.Model):
     shipping_city = models.CharField(max_length=100, blank=True)
     shipping_province = models.CharField(max_length=5, blank=True)
     shipping_state = models.CharField(max_length=50, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def copy_shipping_address(self, shipping_address: ShippingAddress):
         self.shipping_name = shipping_address.name

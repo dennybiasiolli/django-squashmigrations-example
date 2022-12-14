@@ -13,51 +13,23 @@ class ShopTestCase(TestCase):
         self.u2 = UserModel.objects.create(username="bar")
 
     def test_customer_uniqueness_with_user(self):
-        Customer.objects.create(
-            user=self.u1,
-            shipping_name="1",
-            shipping_address="1",
-            shipping_zip_code="1",
-            shipping_city="1",
-            shipping_province="1",
-            shipping_state="1",
-        )
+        Customer.objects.create(user=self.u1, is_premium=False)
         with self.assertRaises(Exception) as raised:
             with transaction.atomic():
-                Customer.objects.create(
-                    user=self.u1,
-                    shipping_name="2",
-                    shipping_address="2",
-                    shipping_zip_code="2",
-                    shipping_city="2",
-                    shipping_province="2",
-                    shipping_state="2",
-                )
+                Customer.objects.create(user=self.u1, is_premium=True)
         self.assertEqual(IntegrityError, type(raised.exception))
         self.u1.refresh_from_db()
-        self.assertEqual(self.u1.customer.shipping_name, "1")
+        self.assertFalse(self.u1.customer.is_premium, "1")
 
     def test_customer_is_premium_default_false(self):
         customer = Customer.objects.create(
             user=self.u1,
-            shipping_name="1",
-            shipping_address="1",
-            shipping_zip_code="1",
-            shipping_city="1",
-            shipping_province="1",
-            shipping_state="1",
         )
         self.assertFalse(customer.is_premium)
 
     def test_customer_shipping_addresses(self):
         customer = Customer.objects.create(
             user=self.u1,
-            shipping_name="1",
-            shipping_address="1",
-            shipping_zip_code="1",
-            shipping_city="1",
-            shipping_province="1",
-            shipping_state="1",
         )
         customer.full_clean()
         shipping_address = customer.shipping_addresses.create(

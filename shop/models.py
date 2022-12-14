@@ -9,6 +9,7 @@ class Customer(models.Model):
         unique=True,
         related_name="customer",
     )
+    is_premium = models.BooleanField(default=False)
     shipping_name = models.CharField(max_length=100)
     shipping_address = models.CharField(max_length=50)
     shipping_zip_code = models.CharField(max_length=10)

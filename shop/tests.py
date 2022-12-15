@@ -68,20 +68,20 @@ class ShopTestCase(TestCase):
         order.lines.create(
             product_name="product",
             product_um="Unit(s)",
-            product_quantity=12,
             product_unit_price=3.4,
+            quantity=12,
         )
         self.assertEqual(
             order.lines.first().amount,
-            12 * 3.4,
+            3.4 * 12,
         )
         order.lines.create(
             product_name="product",
             product_um="Unit(s)",
-            product_quantity=56,
             product_unit_price=7.8,
+            quantity=56,
         )
         self.assertEqual(
             order.total_amount,
-            (12 * 3.4) + (56 * 7.8),
+            (3.4 * 12) + (7.8 * 56),
         )

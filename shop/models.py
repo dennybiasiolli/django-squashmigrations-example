@@ -11,7 +11,7 @@ class Customer(models.Model):
         get_user_model(),
         on_delete=models.CASCADE,
         unique=True,
-        related_name="customer",
+        related_name="shop_customer",
     )
     is_premium = models.BooleanField(default=False)
 

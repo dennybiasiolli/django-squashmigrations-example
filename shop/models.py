@@ -7,11 +7,19 @@ from .managers import OrderLineManager
 
 
 class Customer(models.Model):
+    class CustomerType(models.IntegerChoices):
+        FREE = 0
+        PREMIUM = 1
+
     user = models.OneToOneField(
         get_user_model(),
         on_delete=models.CASCADE,
         unique=True,
         related_name="shop_customer",
+    )
+    customer_type = models.IntegerField(
+        choices=CustomerType.choices,
+        default=CustomerType.FREE,
     )
     is_premium = models.BooleanField(default=False)
 

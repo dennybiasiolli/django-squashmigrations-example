@@ -57,3 +57,26 @@ class ShopTestCase(TestCase):
         order.copy_shipping_address(shipping_address)
         order.full_clean()
         order.save()
+
+    def test_order_amounts(self):
+        order = self.c2.orders.create()
+        order.lines.create(
+            product_name="product",
+            product_um="Unit(s)",
+            product_quantity=12,
+            product_unit_price=3.4,
+        )
+        self.assertEqual(
+            order.lines.first().amount,
+            12 * 3.4,
+        )
+        order.lines.create(
+            product_name="product",
+            product_um="Unit(s)",
+            product_quantity=56,
+            product_unit_price=7.8,
+        )
+        self.assertEqual(
+            order.total_amount,
+            (12 * 3.4) + (56 * 7.8),
+        )

@@ -1,5 +1,9 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.db.models import F, Sum
+from django.utils.functional import cached_property
+
+from .managers import OrderLineManager
 
 
 class Customer(models.Model):
@@ -36,6 +40,15 @@ class Order(models.Model):
     shipping_state = models.CharField(max_length=50, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    @cached_property
+    def total_amount(self):
+        aggregation = (
+            self.lines.all()
+            .annotate(amount=F("product_quantity") * F("product_unit_price"))
+            .aggregate(total_amount=Sum("amount"))
+        )
+        return aggregation["total_amount"]
+
     def copy_shipping_address(self, shipping_address: ShippingAddress):
         self.shipping_name = shipping_address.name
         self.shipping_address = shipping_address.address
@@ -43,3 +56,12 @@ class Order(models.Model):
         self.shipping_city = shipping_address.city
         self.shipping_province = shipping_address.province
         self.shipping_state = shipping_address.state
+
+
+class OrderLine(models.Model):
+    objects = OrderLineManager()
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="lines")
+    product_name = models.CharField(max_length=100)
+    product_um = models.CharField(max_length=10)
+    product_quantity = models.FloatField()
+    product_unit_price = models.FloatField()

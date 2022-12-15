@@ -57,7 +57,7 @@ class Order(models.Model):
     def total_amount(self):
         aggregation = (
             self.lines.all()
-            .annotate(amount=F("product_quantity") * F("product_unit_price"))
+            .annotate(amount=F("quantity") * F("product_unit_price"))
             .aggregate(total_amount=Sum("amount"))
         )
         return aggregation["total_amount"]
@@ -76,5 +76,5 @@ class OrderLine(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="lines")
     product_name = models.CharField(max_length=100)
     product_um = models.CharField(max_length=10)
-    product_quantity = models.FloatField()
     product_unit_price = models.FloatField()
+    quantity = models.FloatField()

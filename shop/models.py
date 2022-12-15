@@ -10,6 +10,12 @@ class Customer(models.Model):
     class CustomerType(models.IntegerChoices):
         FREE = 0
         PREMIUM = 1
+        BRONZE = 2
+        SILVER = 3
+        GOLD = 4
+        PLATINUM = 5
+        DIAMOND = 6
+        MAIN = 10
 
     user = models.OneToOneField(
         get_user_model(),

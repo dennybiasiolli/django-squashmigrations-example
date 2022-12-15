@@ -21,7 +21,6 @@ class Customer(models.Model):
         choices=CustomerType.choices,
         default=CustomerType.FREE,
     )
-    is_premium = models.BooleanField(default=False)
 
 
 class ShippingAddress(models.Model):

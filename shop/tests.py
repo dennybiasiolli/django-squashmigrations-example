@@ -3,7 +3,7 @@ from django.db import transaction
 from django.db.utils import IntegrityError
 from django.test import TestCase
 
-from shop.models import Customer, ShippingAddress
+from shop.models import Customer, OrderLine, Product, ShippingAddress
 
 
 class ShopTestCase(TestCase):
@@ -85,3 +85,31 @@ class ShopTestCase(TestCase):
             order.total_amount,
             (3.4 * 12) + (7.8 * 56),
         )
+
+    def test_customer_products(self):
+        customer = Customer.objects.create(
+            user=self.u1,
+        )
+        customer.full_clean()
+        product = customer.products.create(
+            name="product",
+            um="unit",
+            unit_price=1.23,
+        )
+        product.full_clean()
+
+    def test_order_copy_product(self):
+        product = self.c2.products.create(
+            name="1" * Product.name.field.max_length,
+            um="1" * Product.um.field.max_length,
+            unit_price=1.23,
+        )
+        product.full_clean()
+        order = self.c2.orders.create()
+        line = OrderLine(
+            order=order,
+            quantity=5,
+        )
+        line.copy_product(product)
+        line.full_clean()
+        line.save()

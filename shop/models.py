@@ -41,6 +41,15 @@ class ShippingAddress(models.Model):
     state = models.CharField(max_length=50)
 
 
+class Product(models.Model):
+    customer = models.ForeignKey(
+        Customer, on_delete=models.CASCADE, related_name="products"
+    )
+    name = models.CharField(max_length=100)
+    um = models.CharField(max_length=10)
+    unit_price = models.FloatField()
+
+
 class Order(models.Model):
     customer = models.ForeignKey(
         Customer, on_delete=models.CASCADE, related_name="orders"
@@ -78,3 +87,8 @@ class OrderLine(models.Model):
     product_um = models.CharField(max_length=10)
     product_unit_price = models.FloatField()
     quantity = models.FloatField()
+
+    def copy_product(self, product: Product):
+        self.product_name = product.name
+        self.product_um = product.um
+        self.product_unit_price = product.unit_price

@@ -14,13 +14,28 @@ class ShopTestCase(TestCase):
         self.c2 = Customer.objects.create(user=self.u2)
 
     def test_customer_uniqueness_with_user(self):
-        Customer.objects.create(user=self.u1, is_premium=False)
+        Customer.objects.create(
+            user=self.u1, customer_type=Customer.CustomerType.FREE, is_premium=False
+        )
         with self.assertRaises(Exception) as raised:
             with transaction.atomic():
-                Customer.objects.create(user=self.u1, is_premium=True)
+                Customer.objects.create(
+                    user=self.u1,
+                    customer_type=Customer.CustomerType.PREMIUM,
+                    is_premium=True,
+                )
         self.assertEqual(IntegrityError, type(raised.exception))
         self.u1.refresh_from_db()
-        self.assertFalse(self.u1.shop_customer.is_premium, "1")
+        self.assertEqual(
+            self.u1.shop_customer.customer_type, Customer.CustomerType.FREE
+        )
+        self.assertFalse(self.u1.shop_customer.is_premium)
+
+    def test_customer_type_default_false(self):
+        customer = Customer.objects.create(
+            user=self.u1,
+        )
+        self.assertEqual(customer.customer_type, Customer.CustomerType.FREE)
 
     def test_customer_is_premium_default_false(self):
         customer = Customer.objects.create(

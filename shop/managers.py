@@ -7,5 +7,5 @@ class OrderLineManager(models.Manager):
         return (
             super()
             .get_queryset()
-            .annotate(amount=F("product_quantity") * F("product_unit_price"))
+            .annotate(amount=F("quantity") * F("product_unit_price"))
         )

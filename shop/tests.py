@@ -20,7 +20,7 @@ class ShopTestCase(TestCase):
                 Customer.objects.create(user=self.u1, is_premium=True)
         self.assertEqual(IntegrityError, type(raised.exception))
         self.u1.refresh_from_db()
-        self.assertFalse(self.u1.customer.is_premium, "1")
+        self.assertFalse(self.u1.shop_customer.is_premium, "1")
 
     def test_customer_is_premium_default_false(self):
         customer = Customer.objects.create(

@@ -5,11 +5,60 @@ import django.utils.timezone
 from django.conf import settings
 from django.db import migrations, models
 
-# Functions from the following migrations need manual copying.
-# Move them and any dependencies into this file, then update the
-# RunPython operations to refer to the local versions:
-# shop.migrations.0004_migrate_shipping_address
-# shop.migrations.0017_migrate_is_premium_to_customer_type
+from shop.models import Customer
+
+
+def forward_func_0004(apps, schema_editor):
+    db_alias = schema_editor.connection.alias
+    CustomerModel = apps.get_model("shop", "Customer")
+    customers = CustomerModel.objects.using(db_alias).all()
+    for customer in customers:
+        customer.shipping_addresses.create(
+            name=customer.shipping_name,
+            address=customer.shipping_address,
+            zip_code=customer.shipping_zip_code,
+            city=customer.shipping_city,
+            province=customer.shipping_province,
+            state=customer.shipping_state,
+        )
+
+
+def backward_func_0004(apps, schema_editor):
+    db_alias = schema_editor.connection.alias
+    CustomerModel = apps.get_model("shop", "Customer")
+    customers = CustomerModel.objects.using(db_alias).all()
+    for customer in customers:
+        shipping_address = customer.shipping_addresses.last()
+        if shipping_address:
+            customer.shipping_name = shipping_address.name
+            customer.shipping_address = shipping_address.address
+            customer.shipping_zip_code = shipping_address.zip_code
+            customer.shipping_city = shipping_address.city
+            customer.shipping_province = shipping_address.province
+            customer.shipping_state = shipping_address.state
+            customer.save()
+
+
+def forward_func_0017(apps, schema_editor):
+    db_alias = schema_editor.connection.alias
+    CustomerModel = apps.get_model("shop", "Customer")
+    customers = CustomerModel.objects.using(db_alias).all()
+    for customer in customers:
+        customer.customer_type = (
+            Customer.CustomerType.PREMIUM
+            if customer.is_premium
+            else Customer.CustomerType.FREE
+        )
+
+
+def backward_func_0017(apps, schema_editor):
+    db_alias = schema_editor.connection.alias
+    CustomerModel = apps.get_model("shop", "Customer")
+    customers = CustomerModel.objects.using(db_alias).all()
+    for customer in customers:
+        is_premium = customer.customer_type == Customer.CustomerType.PREMIUM
+        customer.is_premium = is_premium
+        customer.save()
 
 
 class Migration(migrations.Migration):
@@ -109,10 +158,10 @@ class Migration(migrations.Migration):
                 ),
             ],
         ),
-        # migrations.RunPython(
-        #     code=shop.migrations.0004_migrate_shipping_address.forward_func,
-        #     reverse_code=shop.migrations.0004_migrate_shipping_address.backward_func,
-        # ),
+        migrations.RunPython(
+            code=forward_func_0004,
+            reverse_code=backward_func_0004,
+        ),
         migrations.RemoveField(
             model_name="customer",
             name="shipping_state",
@@ -233,10 +282,10 @@ class Migration(migrations.Migration):
             name="customer_type",
             field=models.IntegerField(choices=[(0, "Free"), (1, "Premium")], default=0),
         ),
-        # migrations.RunPython(
-        #     code=shop.migrations.0017_migrate_is_premium_to_customer_type.forward_func,
-        #     reverse_code=shop.migrations.0017_migrate_is_premium_to_customer_type.backward_func,
-        # ),
+        migrations.RunPython(
+            code=forward_func_0017,
+            reverse_code=backward_func_0017,
+        ),
         migrations.RemoveField(
             model_name="customer",
             name="is_premium",

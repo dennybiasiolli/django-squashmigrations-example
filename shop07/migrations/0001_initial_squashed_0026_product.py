@@ -63,35 +63,6 @@ def backward_func_0017(apps, schema_editor):
 
 class Migration(migrations.Migration):
 
-    replaces = [
-        ("shop07", "0001_initial"),
-        ("shop07", "0002_customer_is_premium"),
-        ("shop07", "0003_shippingaddress"),
-        ("shop07", "0004_migrate_shipping_address"),
-        ("shop07", "0005_remove_customer_shipping_state"),
-        ("shop07", "0006_remove_customer_shipping_province"),
-        ("shop07", "0007_remove_customer_shipping_city"),
-        ("shop07", "0008_remove_customer_shipping_zip_code"),
-        ("shop07", "0009_remove_customer_shipping_address"),
-        ("shop07", "0010_remove_customer_shipping_name"),
-        ("shop07", "0011_alter_shippingaddress_address_and_more"),
-        ("shop07", "0012_order"),
-        ("shop07", "0013_order_created_at"),
-        ("shop07", "0014_orderline"),
-        ("shop07", "0015_alter_customer_user"),
-        ("shop07", "0016_customer_customer_type"),
-        ("shop07", "0017_migrate_is_premium_to_customer_type"),
-        ("shop07", "0018_remove_customer_is_premium"),
-        ("shop07", "0019_alter_customer_customer_type"),
-        ("shop07", "0020_alter_customer_customer_type"),
-        ("shop07", "0021_alter_customer_customer_type"),
-        ("shop07", "0022_alter_customer_customer_type"),
-        ("shop07", "0023_alter_customer_customer_type"),
-        ("shop07", "0024_alter_customer_customer_type"),
-        ("shop07", "0025_rename_product_quantity_orderline_quantity"),
-        ("shop07", "0026_product"),
-    ]
-
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]

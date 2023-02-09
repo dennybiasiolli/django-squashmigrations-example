@@ -8,34 +8,6 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     initial = True
-    replaces = [
-        ("shop", "0001_initial"),
-        ("shop", "0002_customer_is_premium"),
-        ("shop", "0003_shippingaddress"),
-        ("shop", "0004_migrate_shipping_address"),
-        ("shop", "0005_remove_customer_shipping_state"),
-        ("shop", "0006_remove_customer_shipping_province"),
-        ("shop", "0007_remove_customer_shipping_city"),
-        ("shop", "0008_remove_customer_shipping_zip_code"),
-        ("shop", "0009_remove_customer_shipping_address"),
-        ("shop", "0010_remove_customer_shipping_name"),
-        ("shop", "0011_alter_shippingaddress_address_and_more"),
-        ("shop", "0012_order"),
-        ("shop", "0013_order_created_at"),
-        ("shop", "0014_orderline"),
-        ("shop", "0015_alter_customer_user"),
-        ("shop", "0016_customer_customer_type"),
-        ("shop", "0017_migrate_is_premium_to_customer_type"),
-        ("shop", "0018_remove_customer_is_premium"),
-        ("shop", "0019_alter_customer_customer_type"),
-        ("shop", "0020_alter_customer_customer_type"),
-        ("shop", "0021_alter_customer_customer_type"),
-        ("shop", "0022_alter_customer_customer_type"),
-        ("shop", "0023_alter_customer_customer_type"),
-        ("shop", "0024_alter_customer_customer_type"),
-        ("shop", "0025_rename_product_quantity_orderline_quantity"),
-        ("shop", "0026_product"),
-    ]
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),

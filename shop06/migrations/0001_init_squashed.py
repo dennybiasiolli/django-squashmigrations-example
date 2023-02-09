@@ -8,34 +8,6 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     initial = True
-    replaces = [
-        ("shop06", "0001_initial"),
-        ("shop06", "0002_customer_is_premium"),
-        ("shop06", "0003_shippingaddress"),
-        ("shop06", "0004_migrate_shipping_address"),
-        ("shop06", "0005_remove_customer_shipping_state"),
-        ("shop06", "0006_remove_customer_shipping_province"),
-        ("shop06", "0007_remove_customer_shipping_city"),
-        ("shop06", "0008_remove_customer_shipping_zip_code"),
-        ("shop06", "0009_remove_customer_shipping_address"),
-        ("shop06", "0010_remove_customer_shipping_name"),
-        ("shop06", "0011_alter_shippingaddress_address_and_more"),
-        ("shop06", "0012_order"),
-        ("shop06", "0013_order_created_at"),
-        ("shop06", "0014_orderline"),
-        ("shop06", "0015_alter_customer_user"),
-        ("shop06", "0016_customer_customer_type"),
-        ("shop06", "0017_migrate_is_premium_to_customer_type"),
-        ("shop06", "0018_remove_customer_is_premium"),
-        ("shop06", "0019_alter_customer_customer_type"),
-        ("shop06", "0020_alter_customer_customer_type"),
-        ("shop06", "0021_alter_customer_customer_type"),
-        ("shop06", "0022_alter_customer_customer_type"),
-        ("shop06", "0023_alter_customer_customer_type"),
-        ("shop06", "0024_alter_customer_customer_type"),
-        ("shop06", "0025_rename_product_quantity_orderline_quantity"),
-        ("shop06", "0026_product"),
-    ]
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),

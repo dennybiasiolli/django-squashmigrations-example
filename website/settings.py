@@ -110,6 +110,7 @@ DATABASES = {
         "PORT": os.environ.get("DB_PORT"),
     }
 }
+MIGRATE = False
 
 
 # Password validation

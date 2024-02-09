@@ -58,6 +58,7 @@ jobs:
 
       - name: Run migrations
         run: |
+          zcat < .dumps/django-squashmigrations-example.sql.gz | psql -h ${{ env.DB_HOST }} -p ${{ env.DB_PORT }} -U ${{ env.DB_USER }} -d ${{ env.DB_NAME }}
           python manage.py migrate
         env:
           DB_NAME: ${{ env.DB_NAME }}
@@ -65,6 +66,7 @@ jobs:
           DB_PASSWORD: ${{ env.DB_PASSWORD }}
           DB_HOST: ${{ env.DB_HOST }}
           DB_PORT: ${{ env.DB_PORT }}
+          PGPASSWORD: ${{ env.DB_PASSWORD }} # required for psql to use password
 
       - name: Run tests
         run: |

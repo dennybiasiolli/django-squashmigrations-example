@@ -41,6 +41,10 @@ jobs:
           --health-retries 5
         ports:
           - 5432:5432
+        # the `volumes+initdbb` option is not usable in GitHub Actions,
+        # the source directory is not available when the service is created
+        # volumes:
+        #   - ./.dumps:/docker-entrypoint-initdb.d
     steps:
       - uses: actions/checkout@v4
       - name: Setup Python ${{ env.PYTHON_VERSION }}
